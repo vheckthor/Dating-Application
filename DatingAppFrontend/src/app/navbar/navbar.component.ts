@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../allservices/auth.service';
+import { AlertifyService } from '../allservices/alertify.service';
+import {Imodel} from '../interfaces/Imodel';
 
 @Component({
   selector: 'app-navbar',
@@ -7,26 +9,35 @@ import { AuthService } from '../allservices/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  model: any = {};
-  constructor(private authServices: AuthService) { }
+  model: Imodel = {
+    username: '',
+    password: ''
+  };
+  constructor(public authServices: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
   login(){
     this.authServices.login(this.model).subscribe(next => {
-      console.log('logged in successfully');
+      this.alertify.success('logged in successfully');
     }, error => {
-      console.log('Failed to login');
+      console.log(error);
+      if (error === 'Unauthorized'){
+        this.alertify.error(error + ': password or username is Invalid');
+        return;
+      }
+      this.alertify.error(error);
     });
   }
 
   loggedIn(){
-    const token = localStorage.getItem('token');
-    return !!token;
+    return this.authServices.loggedIn();
   }
 
   loggedOut(){
     localStorage.removeItem('token');
-    console.log('logged out');
+    this.model.username = '';
+    this.model.password = '';
+    this.alertify.message('logged out');
   }
 }

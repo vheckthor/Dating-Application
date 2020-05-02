@@ -1,5 +1,5 @@
 using System;
-namespace DatingApp.API.Properties.Models
+namespace DatingApp.API.Models
 {
     public class Value
     {

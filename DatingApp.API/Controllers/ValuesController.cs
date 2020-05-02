@@ -1,24 +1,28 @@
-﻿using System;
+﻿using System.Net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
-using DatingApp.API.Properties.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DatingApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ValuesController : ControllerBase
     {
         private DataContext _context;
+
 
         public ValuesController(DataContext context)
         {
             _context = context;
         }
         // GET api/values
+        [AllowAnonymous]
         [HttpGet]
         public  IActionResult Get()
         {
@@ -29,6 +33,7 @@ namespace DatingApp.API.Controllers
         }
 
         // GET api/values/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
