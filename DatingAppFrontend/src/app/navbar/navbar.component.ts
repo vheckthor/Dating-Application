@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../allservices/auth.service';
 import { AlertifyService } from '../allservices/alertify.service';
 import {Imodel} from '../interfaces/Imodel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ export class NavbarComponent implements OnInit {
     username: '',
     password: ''
   };
-  constructor(public authServices: AuthService, private alertify: AlertifyService) { }
+  constructor(public authServices: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -27,6 +28,8 @@ export class NavbarComponent implements OnInit {
         return;
       }
       this.alertify.error(error);
+    }, () => {
+      this.router.navigate(['/members']);
     });
   }
 
@@ -39,5 +42,6 @@ export class NavbarComponent implements OnInit {
     this.model.username = '';
     this.model.password = '';
     this.alertify.message('logged out');
+    this.router.navigate(['/home']);
   }
 }
