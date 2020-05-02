@@ -14,3 +14,4 @@ C:\Users\adeba\Desktop\C# projects\DatingApplication\DatingApp.API\obj\Debug\net
 C:\Users\adeba\Desktop\C# projects\DatingApplication\DatingApp.API\obj\Debug\netcoreapp2.2\DatingApp.API.RazorTargetAssemblyInfo.cache
 C:\Users\adeba\Desktop\C# projects\DatingApplication\DatingApp.API\obj\Debug\netcoreapp2.2\DatingApp.API.dll
 C:\Users\adeba\Desktop\C# projects\DatingApplication\DatingApp.API\obj\Debug\netcoreapp2.2\DatingApp.API.pdb
+C:\Users\adeba\Desktop\C# projects\DatingApplication\DatingApp.API\bin\Debug\netcoreapp2.2\Data\UserSeedData.json

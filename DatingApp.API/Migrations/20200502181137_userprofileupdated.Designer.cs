@@ -3,14 +3,16 @@ using System;
 using DatingApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200502181137_userprofileupdated")]
+    partial class userprofileupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,8 +53,6 @@ namespace DatingApp.API.Migrations
 
                     b.Property<DateTime>("DateofBirth");
 
-                    b.Property<string>("Email");
-
                     b.Property<string>("Gender");
 
                     b.Property<string>("Interests");
@@ -63,17 +63,11 @@ namespace DatingApp.API.Migrations
 
                     b.Property<DateTime>("LastActive");
 
-                    b.Property<float?>("Location");
-
                     b.Property<string>("LookingFor");
 
                     b.Property<byte[]>("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt");
-
-                    b.Property<string>("PersonalityType");
-
-                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("Username");
 
