@@ -19,7 +19,7 @@ namespace DatingApp.API.JwtToken
         public void Tokenizer(User logged, out JwtSecurityTokenHandler tokenHandler, out SecurityToken token)
         {
             var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier,logged.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier,logged.UserUniqueIdentity.ToString()),
                 new Claim(ClaimTypes.Name,logged.Username)
 
             };

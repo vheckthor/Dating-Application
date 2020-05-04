@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
@@ -24,9 +25,9 @@ namespace DatingApp.API.Data
             _context.Remove(entity);
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(Guid  UserUniqueIdentity)
         {
-            var user = await _context.Users.Include(p=>p.Photos).FirstOrDefaultAsync(u=>u.Id==id); 
+            var user = await _context.Users.Include(p=>p.Photos).FirstOrDefaultAsync(u=>u.UserUniqueIdentity == UserUniqueIdentity); 
          return user;
        }
 

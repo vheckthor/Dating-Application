@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace DatingApp.API.Data
                     user.PasswordHash=passwordHash;
                     user.PasswordSalt=passwordSalt;
                     user.Username=user.Username.ToLower();
+                    user.UserUniqueIdentity = Guid.NewGuid();
                     context.Users.Add(user);
                 }
 

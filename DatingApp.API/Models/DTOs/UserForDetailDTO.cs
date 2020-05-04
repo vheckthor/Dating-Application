@@ -7,6 +7,7 @@ namespace DatingApp.API.Models.DTOs
     {
         public int Id { get; set; }
         public string Username { get; set; }
+        public Guid UserUniqueIdentity { get; set; }
         public string Gender { get; set; }
         public int Age { get; set; }
         public string KnownAs { get; set; }
@@ -15,8 +16,6 @@ namespace DatingApp.API.Models.DTOs
         public string Introduction { get; set; }
         public string LookingFor {get; set;}
         public string Interests {get; set;}
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
         public float? Location { get; set; }
         public string PersonalityType {get; set;}
         public string City {get; set;}

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -5,6 +6,7 @@ using DatingApp.API.Data;
 using DatingApp.API.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace DatingApp.API.Controllers
 {
@@ -30,18 +32,28 @@ namespace DatingApp.API.Controllers
             return Ok(usersReturner);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        [HttpGet("{UserUniqueIdentity}")]
+        public async Task<IActionResult> GetUser(Guid  UserUniqueIdentity)
         {
-            var user = await _repo.GetUser(id);
+            var user = await _repo.GetUser(UserUniqueIdentity);
             var userReturn = _mapper.Map<UserForDetailDTO>(user);
             return Ok(userReturn);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> AddUser()
-        // {
+        [HttpPut("{UserUniqueIdentity}")]
+        public async Task<IActionResult> UpdateUser(Guid UserUniqueIdentity, UserForUpdateDTO updateUser)
+        {
+            var claim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if( UserUniqueIdentity.ToString() !=claim)
+            {
+                return Unauthorized("Invalid user Access");
+            }
 
-        // }
+            var userFromRepo = await _repo.GetUser(UserUniqueIdentity);
+            _mapper.Map(updateUser,userFromRepo);
+            if(await _repo.SaveAll())
+                return NoContent();
+            return StatusCode(403);
+        }
     }
 }
