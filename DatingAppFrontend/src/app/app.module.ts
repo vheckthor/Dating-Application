@@ -29,6 +29,8 @@ import { MemberListResolver } from './aresolver/member-list.resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './aresolver/member-editresolver';
 import { PreventUnsavedChangesGuard } from './aguards/prevent-unsaved-changes.guard';
+import { PhotoEditorComponent } from './members/Photo-Editor/Photo-Editor.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 
 
@@ -53,13 +55,15 @@ export class CustomerHammerConfig extends HammerGestureConfig{
       MessagesComponent,
       MemberCardComponent,
       MemberDetailComponent,
-      MemberEditComponent
+      MemberEditComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
       BrowserAnimationsModule,
       NgxGalleryModule,
       HttpClientModule,
+      FileUploadModule,
       FormsModule,
       RouterModule.forRoot(appRoutes),
       BsDropdownModule.forRoot(),

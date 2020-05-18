@@ -14,9 +14,11 @@ export class NavbarComponent implements OnInit {
     username: '',
     password: ''
   };
+  photoLink: string;
   constructor(public authServices: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
+    this.authServices.currentPhotoUrl.subscribe(photopath => this.photoLink = photopath);
   }
   login(){
     this.authServices.login(this.model).subscribe(next => {
@@ -39,6 +41,9 @@ export class NavbarComponent implements OnInit {
 
   loggedOut(){
     localStorage.removeItem('token');
+    localStorage.removeItem('userpix');
+    this.authServices.decodedToken = null;
+    this.authServices.currentUser = null;
     this.model.username = '';
     this.model.password = '';
     this.alertify.message('logged out');

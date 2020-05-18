@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using DatingApp.API.JwtToken;
+using AutoMapper;
 
 namespace DatingApp.API.Controllers
 {
@@ -19,11 +20,14 @@ namespace DatingApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly ITokenProvider _provider;
-        public AuthController(IAuthRepository repo, ITokenProvider provider)
+        private IMapper _mapper;
+
+        public AuthController(IAuthRepository repo, ITokenProvider provider, IMapper mapper)
         {
             _provider = provider;
           
             _repo = repo;
+            _mapper = mapper;
 
         }
 
@@ -70,9 +74,10 @@ namespace DatingApp.API.Controllers
                 
                 _provider.Tokenizer(logged, out tokenHandler, out token);
 
+                var mapped = _mapper.Map<UserForListDTO>(logged);
                 return Ok(new
                 {
-                    token = tokenHandler.WriteToken(token)
+                    token = tokenHandler.WriteToken(token), mapped.PhotoUrl
                 });
             }
             catch (Exception e)

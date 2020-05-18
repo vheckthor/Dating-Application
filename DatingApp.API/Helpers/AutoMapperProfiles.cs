@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Linq;
 using AutoMapper;
 using DatingApp.API.Models;
@@ -28,8 +29,15 @@ namespace DatingApp.API.Helpers
                 opt=>opt.MapFrom(
                     src=>src.DateofBirth.GetAge()))    ;
 
-        CreateMap<Photo, PhotoForDetailsDTO>();
+        CreateMap<Photo, PhotoForDetailsDTO>()
+            .ForMember(dest => dest.PhotoUniqueIdentifier, 
+            opt => opt.MapFrom(src => src.PhotoUniqueIdentifier));
         CreateMap<UserForUpdateDTO, User>();
+        CreateMap<Photo, PhotoReturnDTO>()
+        .ForMember(dest => dest.UniquePhotoIdentifier,
+         option=> option.MapFrom(src=>src.PhotoUniqueIdentifier));
+
+        CreateMap<PhotoForCreationDTO, Photo>();
      }   
     }
 }

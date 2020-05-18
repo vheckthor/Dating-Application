@@ -26,6 +26,10 @@ namespace DatingApp.API.Data
                     user.PasswordSalt=passwordSalt;
                     user.Username=user.Username.ToLower();
                     user.UserUniqueIdentity = Guid.NewGuid();
+                    user.Photos.ToList().ForEach(
+                        x => {x.UserUniqueID = user.UserUniqueIdentity;
+                        x.PhotoUniqueIdentifier = Guid.NewGuid();}
+                        );
                     context.Users.Add(user);
                 }
 
