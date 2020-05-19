@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Text;
 using System.Security.Claims;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using DatingApp.API.JwtToken;
 using AutoMapper;
+using System.Collections.Generic;
+using DatingApp.API.Helpers;
 
 namespace DatingApp.API.Controllers
 {
@@ -36,20 +39,28 @@ namespace DatingApp.API.Controllers
         {
             try
             {
+                var val = user.DateOfBirth.GetAge();
+
+                if( val < 18){
+                    return BadRequest("Cannot register user under 18 years.");
+                }
+                
                 if (await _repo.UserExists(user.username.ToLower()))
                 {
                     return BadRequest("Username already Exists");
                 }
-                var ouruser = new User
-                {
-                    Username = user.username
-                };
+
+                var ouruser = _mapper.Map<User>(user);
+
+                ouruser.UserUniqueIdentity = Guid.NewGuid();
+                ouruser.PhoneNumber.ToList()[0].UserIdentifier = ouruser.UserUniqueIdentity;
                 var result = await _repo.Register(ouruser, user.password);
                 if (result == null)
                 {
                     return BadRequest("An error occured saving changes");
                 }
-                return StatusCode(201);
+                var resultReturn = _mapper.Map<UserForDetailDTO>(result);
+                return CreatedAtRoute("GetUser", new {Controller="Users", UserUniqueIdentity= result.UserUniqueIdentity}, resultReturn);
             }
             catch(Exception e)
             {

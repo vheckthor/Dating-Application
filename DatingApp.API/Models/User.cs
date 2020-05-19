@@ -18,7 +18,7 @@ namespace DatingApp.API.Models
         public string Introduction { get; set; }
         public string LookingFor {get; set;}
         public string Interests {get; set;}
-        public string PhoneNumber { get; set; }
+        public ICollection<PhoneNumberDetails> PhoneNumber { get; set; }
         public string Email { get; set; }
         public float? Location { get; set; }
         public string PersonalityType {get; set;}

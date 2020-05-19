@@ -29,7 +29,21 @@ namespace DatingApp.API.Data
                     user.Photos.ToList().ForEach(
                         x => {x.UserUniqueID = user.UserUniqueIdentity;
                         x.PhotoUniqueIdentifier = Guid.NewGuid();}
-                        );
+                    );
+                    var rand =  new Random().Next(10000000,500000000).ToString();
+                    var PhoneNumber = new PhoneNumberDetails(){
+                         
+                        CountryCode="NG",
+                        DialCode = "+234",
+                        Identifier="Phone",
+                        UserIdentifier = user.UserUniqueIdentity,
+                        InternationalNumber= "+234" + rand,
+                        nationalNumber = rand,
+                    
+                    };
+                    user.PhoneNumber = new List<PhoneNumberDetails>();
+                    user.PhoneNumber.Add(PhoneNumber);
+                    
                     context.Users.Add(user);
                 }
 

@@ -9,14 +9,40 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200504095542_AddedPunlicIdtopicturesforcloudinary")]
-    partial class AddedPunlicIdtopicturesforcloudinary
+    [Migration("20200519003518_AddedChanges")]
+    partial class AddedChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+
+            modelBuilder.Entity("DatingApp.API.Models.PhoneNumberDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CountryCode");
+
+                    b.Property<string>("DialCode");
+
+                    b.Property<string>("Identifier");
+
+                    b.Property<string>("InternationalNumber");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<Guid>("UserIdentifier");
+
+                    b.Property<string>("nationalNumber");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PhoneNumber");
+                });
 
             modelBuilder.Entity("DatingApp.API.Models.Photo", b =>
                 {
@@ -29,11 +55,15 @@ namespace DatingApp.API.Migrations
 
                     b.Property<bool>("IsMain");
 
+                    b.Property<Guid>("PhotoUniqueIdentifier");
+
                     b.Property<string>("PublicId");
 
                     b.Property<string>("Url");
 
                     b.Property<int>("UserId");
+
+                    b.Property<Guid>("UserUniqueID");
 
                     b.HasKey("Id");
 
@@ -77,8 +107,6 @@ namespace DatingApp.API.Migrations
 
                     b.Property<string>("PersonalityType");
 
-                    b.Property<string>("PhoneNumber");
-
                     b.Property<Guid>("UserUniqueIdentity");
 
                     b.Property<string>("Username");
@@ -98,6 +126,14 @@ namespace DatingApp.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Values");
+                });
+
+            modelBuilder.Entity("DatingApp.API.Models.PhoneNumberDetails", b =>
+                {
+                    b.HasOne("DatingApp.API.Models.User", "User")
+                        .WithMany("PhoneNumber")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DatingApp.API.Models.Photo", b =>

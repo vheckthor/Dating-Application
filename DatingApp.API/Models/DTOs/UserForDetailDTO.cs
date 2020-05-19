@@ -17,6 +17,7 @@ namespace DatingApp.API.Models.DTOs
         public string LookingFor {get; set;}
         public string Interests {get; set;}
         public float? Location { get; set; }
+        public string PhoneNumber { get; set; }
         public string PersonalityType {get; set;}
         public string City {get; set;}
         public string Country {get; set;} 

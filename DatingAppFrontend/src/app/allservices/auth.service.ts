@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import {map} from 'rxjs/operators';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { IRegister } from '../interfaces/IRegister';
+import { Imodel } from '../interfaces/Imodel';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ changeMemberPhoto(photoUrl: string){
   this.photoUrlSubject.next(photoUrl);
 }
 
-login(model: any){
+login(model: Imodel){
   return this.http.post(this.baseUrl + 'login', model)
   .pipe(
     map((response: any) => {
@@ -40,7 +42,7 @@ login(model: any){
   );
 }
 
-register(model: any){
+register(model: IRegister){
   return this.http.post(this.baseUrl + 'register', model )
   .pipe(map((response: any) => {
 

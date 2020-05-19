@@ -1,17 +1,134 @@
 
 <br>
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<form [formGroup]="registerationForm" (ngSubmit)="register()">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
   <div class="form-group">
-    <input type="text" class="form-control" required name="username" [(ngModel)]="model.username" placeholder="Username">
+    <label class="control-label" style="margin-right:10px">I am a: </label>
+    <label class="radio-inline">
+      <input class="mr-3" type="radio" value="male" formControlName="gender">Male
+    </label>
+    <label class="radio-inline ml-3">
+      <input class="mr-3" type="radio" value="female" formControlName="gender">Female
+    </label>
+  </div>
+ 
+  <div class="form-group">
+    <input type="text"
+      [ngClass]="{'is-invalid': registerationForm.get('username').errors && registerationForm.get('username').touched}"
+    class="form-control" formControlName="username"  placeholder="Username">
+    <div class="invalid-feedback">Please choose a username</div>
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" required name="password" [(ngModel)]="model.password" placeholder="Password">
+    <input type="password" 
+    [ngClass]="{'is-invalid': registerationForm.get('password').errors && registerationForm.get('password').touched}"
+    class="form-control" formControlName="password"  placeholder="Password">
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.get('password').hasError('required') 
+    && registerationForm.get('password').touched"
+    >Password field required.</div>
+
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.get('password').hasError('minlength') 
+    && registerationForm.get('password').touched"
+    >Password must be at least 6 characters</div>
+
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.get('password').hasError('maxlength') 
+    && registerationForm.get('password').touched"
+    >Password must be less than 20 characters</div>
+  </div>
+  <div class="form-group">
+    <input type="password" 
+    [ngClass]="{'is-invalid': registerationForm.get('confirmPassword').errors && registerationForm.get('confirmPassword').touched
+      || (registerationForm.get('confirmPassword').touched && registerationForm.hasError('mismatch'))}"
+    class="form-control" formControlName="confirmPassword"  placeholder="Confirm Password">
+    
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.get('confirmPassword').hasError('required') 
+    && registerationForm.get('confirmPassword').touched"
+    >
+      Confirm Password field required.
+    </div>
+
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.hasError('mismatch') 
+    && registerationForm.get('confirmPassword').touched"
+    >
+      password must match.
+    </div>
+  </div>
+ 
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerationForm.get('knownAs').errors && registerationForm.get('knownAs').touched}" class="form-control"
+      placeholder="Known as" formControlName="knownAs">
+    <div class="invalid-feedback" *ngIf="registerationForm.get('knownAs').touched && registerationForm.get('knownAs').hasError('required')">Known as is required</div>
   </div>
 
+  <div class="form-group">
+    <ngx-intl-tel-input 
+      [ngClass]="{'is-invalid': registerationForm.get('phoneNumber').errors && registerationForm.get('phoneNumber').touched}" 
+      
+      formControlName="phoneNumber" 
+     
+      [preferredCountries]="preferredCountries"
+      [enableAutoCountrySelect]="false" 
+      [enablePlaceholder]="true" 
+      [searchCountryFlag]="true"
+      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+      [selectFirstCountry]="false" 
+      [selectedCountryISO]="CountryISO.Nigeria"
+      [maxLength]="11" 
+      [phoneValidation]="true" 
+      [separateDialCode]="separateDialCode"
+      ></ngx-intl-tel-input>
+    <div class="invalid-feedback" *ngIf="registerationForm.get('phoneNumber').touched && registerationForm.get('phoneNumber').hasError('required')">Phone Number is required</div> 
+    <div class="invalid-feedback" *ngIf="registerationForm.get('phoneNumber').touched && registerationForm.get('phoneNumber').hasError('maxlength')">Phone Number must contain only numbers</div>
+  
+  
+  </div>
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerationForm.get('dateOfBirth').errors && registerationForm.get('dateOfBirth').touched
+    || (registerationForm.get('dateOfBirth').touched && registerationForm.hasError('tooyoung'))}" class="form-control"
+      placeholder="Date of Birth" formControlName="dateOfBirth" type="text" bsDatepicker [bsConfig] ="bsConfig">
+    <div class="invalid-feedback" 
+    *ngIf="registerationForm.get('dateOfBirth').touched 
+    && registerationForm.get('dateOfBirth').hasError('required')">Date of Birth is required</div>
+    
+    <div class="invalid-feedback"
+    *ngIf="registerationForm.get('dateOfBirth').touched && registerationForm.hasError('tooyoung')">
+      Cannot register user under the age of 18.
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <input [ngClass]="{'is-invalid': registerationForm.get('city').errors && registerationForm.get('city').touched}" class="form-control"
+      placeholder="City" formControlName="city">
+    <div class="invalid-feedback" *ngIf="registerationForm.get('city').touched && registerationForm.get('city').hasError('required')">City is required</div>
+  </div>
+
+  <div class="form-group">
+    
+    <select id="country" 
+    [ngClass]="{'is-invalid': registerationForm.get('country').errors && registerationForm.get('country').touched}"
+     formControlName="country" class="form-control">
+     <option value="" disabled selected hidden>Country</option>
+      <option *ngFor="let option of countriesArray" [value]="option">
+        {{option}}
+      </option>
+    </select>
+    <div class="invalid-feedback" *ngIf="registerationForm.get('country').touched && registerationForm.get('country').hasError('required')">Country is required</div>
+  </div>
+
+
+
   <div class="form-group text-center">
-    <button class="btn btn-success mr-2" type="submit">Register</button>
+    <button class="btn btn-success mr-2"  [disabled]="!registerationForm.valid" type="submit">Register</button>
     <button class="btn btn-default" (click)="cancel()" type="button">Cancel</button>
   </div>
 </form>
+
+
+<div>{{registerationForm.valid}}, {{registerationForm.hasError('tooyoung')}}</div>

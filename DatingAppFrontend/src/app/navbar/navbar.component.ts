@@ -14,11 +14,11 @@ export class NavbarComponent implements OnInit {
     username: '',
     password: ''
   };
-  photoLink: string;
+  photoLink = '';
   constructor(public authServices: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
-    this.authServices.currentPhotoUrl.subscribe(photopath => this.photoLink = photopath);
+    this.authServices.currentPhotoUrl.subscribe(photopath =>{ this.photoLink = photopath; });
   }
   login(){
     this.authServices.login(this.model).subscribe(next => {

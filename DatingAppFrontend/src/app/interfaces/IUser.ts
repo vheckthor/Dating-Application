@@ -1,4 +1,5 @@
 import { IPhoto } from './IPhoto';
+
 export interface IUser {
     id: number;
     username: string;
@@ -13,6 +14,7 @@ export interface IUser {
     country: string;
     interests?: string;
     introduction: string;
+    phoneNumber?: string;
     lookingFor: string;
     photos?: IPhoto[];
     personalityType: string;

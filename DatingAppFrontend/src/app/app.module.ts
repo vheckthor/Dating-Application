@@ -1,15 +1,17 @@
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker'
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from './aguards/auth.guard';
 import { UsersService } from './allservices/Users.service';
 import { MemberDetailResolver } from './aresolver/member-detail.resolver';
 import { AlertifyService } from './allservices/alertify.service';
 import {NgxGalleryModule} from 'ngx-gallery-9';
+import {NgxIntlTelInputModule} from 'ngx-intl-tel-input';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -31,6 +33,7 @@ import { MemberEditResolver } from './aresolver/member-editresolver';
 import { PreventUnsavedChangesGuard } from './aguards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/Photo-Editor/Photo-Editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 
 
@@ -38,12 +41,25 @@ export function tokenGetter(){
   return localStorage.getItem('token');
 }
 
+
 export class CustomerHammerConfig extends HammerGestureConfig{
    overrides = {
       pinch: {enable: false},
       rotate: {enable: false}
    };
+};
+
+
+@Pipe({
+ name: 'timeAgo',
+ pure: false
+})
+export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
+   // transform(value: any): string {
+   //    return value;
+   // };
 }
+
 @NgModule({
    declarations: [
       AppComponent,
@@ -56,7 +72,9 @@ export class CustomerHammerConfig extends HammerGestureConfig{
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoExtendsPipe
+      //TimeAgoPipe
    ],
    imports: [
       BrowserModule,
@@ -64,9 +82,12 @@ export class CustomerHammerConfig extends HammerGestureConfig{
       NgxGalleryModule,
       HttpClientModule,
       FileUploadModule,
+      ReactiveFormsModule,
       FormsModule,
       RouterModule.forRoot(appRoutes),
       BsDropdownModule.forRoot(),
+      NgxIntlTelInputModule,
+      BsDatepickerModule.forRoot(),
       TabsModule.forRoot(),
       JwtModule.forRoot({
          config: {
