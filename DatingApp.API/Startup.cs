@@ -47,6 +47,7 @@ namespace DatingApp.API
             services.AddScoped<IDatingRepository,DatingRepository>();
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
             services.AddScoped<ITokenProvider,TokenProvider>();
+            services.AddScoped<LogUserActivities>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(Options=>{
                 Options.TokenValidationParameters = new TokenValidationParameters{

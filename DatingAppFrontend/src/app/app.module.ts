@@ -12,6 +12,7 @@ import { MemberDetailResolver } from './aresolver/member-detail.resolver';
 import { AlertifyService } from './allservices/alertify.service';
 import {NgxGalleryModule} from 'ngx-gallery-9';
 import {NgxIntlTelInputModule} from 'ngx-intl-tel-input';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -85,6 +86,7 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
       ReactiveFormsModule,
       FormsModule,
       RouterModule.forRoot(appRoutes),
+      PaginationModule.forRoot(),
       BsDropdownModule.forRoot(),
       NgxIntlTelInputModule,
       BsDatepickerModule.forRoot(),
