@@ -13,6 +13,9 @@ import { IPagination, PaginationResult } from 'src/app/interfaces/Pagination';
 export class MemberListComponent implements OnInit {
 
 users: IUser[];
+
+genderList = [{value: 'male', display: 'Males'}, {value: 'female', display: 'Females'}];
+userParams: any = {};
 pagination: IPagination;
   constructor(private userServices: UsersService, private alertify: AlertifyService, private route: ActivatedRoute) { }
 
@@ -21,6 +24,11 @@ pagination: IPagination;
     this.users = data.users.result;
     this.pagination = data.users.pagination;
     });
+
+    this.userParams.gender = '';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+    this.userParams.orderBy = 'lastActive';
   }
 
   pageChanged(event: any): void{
@@ -28,9 +36,17 @@ pagination: IPagination;
     this.loadUsers();
   }
 
+
+  resetFilters(){
+    this.userParams.gender = '';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+    this.loadUsers();
+  }
+
   loadUsers(){
     this.userServices
-    .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+    .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
     .subscribe(
       (res: PaginationResult<IUser[]>) =>{
         this.users = res.result;

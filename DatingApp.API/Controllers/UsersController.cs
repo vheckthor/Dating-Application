@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using DatingApp.API.Helpers;
+using DatingApp.API.Models;
 
 namespace DatingApp.API.Controllers
 {
@@ -70,5 +71,76 @@ namespace DatingApp.API.Controllers
                 return NoContent();
             return StatusCode(403);
         }
+
+        [HttpPost("{UserUniqueIdentity}/like/{recipientUniqueId}")]
+        public async Task<IActionResult>LikeUser(Guid UserUniqueIdentity, Guid recipientUniqueId)
+        {
+             var claim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if( UserUniqueIdentity.ToString() !=claim)
+            {
+                return Unauthorized("Invalid user Access");
+            }
+            var userLike = await _repo.GetUser(UserUniqueIdentity);
+
+            var recipientLike = await _repo.GetUser(recipientUniqueId);
+            if (recipientLike == null)
+            {
+                return NotFound("User not Found");
+            }
+            var like = await _repo.GetLike(userLike.Id,recipientLike.Id);
+
+            if (like != null)
+            {
+                return BadRequest("You already liked this user");
+            }
+
+            like = new Like
+            {
+                LikerId = userLike.Id,
+                LikerUniqueId = userLike.UserUniqueIdentity,
+                LikeeId = recipientLike.Id,
+                LikeeUniqueId = recipientUniqueId
+
+            };
+
+            _repo.Add<Like>(like);
+            if( await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("Failed to like user");
+        }
+
+         [HttpPost("{UserUniqueIdentity}/unlike/{recipientUniqueId}")]
+        public async Task<IActionResult>UnLikeUser(Guid UserUniqueIdentity, Guid recipientUniqueId)
+        {
+             var claim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if( UserUniqueIdentity.ToString() !=claim)
+            {
+                return Unauthorized("Invalid user Access");
+            }
+            var userLike = await _repo.GetUser(UserUniqueIdentity);
+
+            var recipientLike = await _repo.GetUser(recipientUniqueId);
+            if (recipientLike == null)
+            {
+                return NotFound("User not Found");
+            }
+            var like = await _repo.GetLike(userLike.Id,recipientLike.Id);
+
+            if (like == null)
+            {
+                return BadRequest("You have not liked this user");
+            }
+
+            _repo.Delete<Like>(like);
+
+            if( await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("Failed to like user");
+        }
+    
     }
 }

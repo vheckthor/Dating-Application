@@ -13,6 +13,7 @@ import { AlertifyService } from './allservices/alertify.service';
 import {NgxGalleryModule} from 'ngx-gallery-9';
 import {NgxIntlTelInputModule} from 'ngx-intl-tel-input';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -35,6 +36,7 @@ import { PreventUnsavedChangesGuard } from './aguards/prevent-unsaved-changes.gu
 import { PhotoEditorComponent } from './members/Photo-Editor/Photo-Editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
+import { ListsResolver } from './aresolver/lists.resolver';
 
 
 
@@ -88,6 +90,7 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
       RouterModule.forRoot(appRoutes),
       PaginationModule.forRoot(),
       BsDropdownModule.forRoot(),
+      ButtonsModule.forRoot(),
       NgxIntlTelInputModule,
       BsDatepickerModule.forRoot(),
       TabsModule.forRoot(),
@@ -109,7 +112,8 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
       MemberListResolver,
       AlertifyService,
       {provide: HAMMER_GESTURE_CONFIG, useClass: CustomerHammerConfig},
-      MemberEditResolver
+      MemberEditResolver,
+      ListsResolver
    ],
    bootstrap: [
       AppComponent
