@@ -37,6 +37,8 @@ import { PhotoEditorComponent } from './members/Photo-Editor/Photo-Editor.compon
 import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { ListsResolver } from './aresolver/lists.resolver';
+import { MessagesResolver } from './aresolver/messages.resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 
 
@@ -76,8 +78,8 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoExtendsPipe
-      //TimeAgoPipe
+      TimeAgoExtendsPipe,
+      MemberMessagesComponent
    ],
    imports: [
       BrowserModule,
@@ -113,7 +115,8 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe implements PipeTransform{
       AlertifyService,
       {provide: HAMMER_GESTURE_CONFIG, useClass: CustomerHammerConfig},
       MemberEditResolver,
-      ListsResolver
+      ListsResolver,
+      MessagesResolver
    ],
    bootstrap: [
       AppComponent

@@ -6,6 +6,8 @@ import { IUser } from '../interfaces/IUser';
 import { IPhoto } from '../interfaces/IPhoto';
 import { PaginationResult } from '../interfaces/Pagination';
 import { map } from 'rxjs/operators';
+import { IMessage } from '../interfaces/message';
+
 
 
 @Injectable({
@@ -66,5 +68,31 @@ deletePhoto(userId: string, id: string){
 
 sendLike(id: string, recipientId: string){
   return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
+}
+
+getMessages(userId: string, messageContainer: string, page?, itemsPerPage?){
+  const paginatedResult: PaginationResult<IMessage[]> = new PaginationResult<IMessage[]>();
+  let params = new HttpParams();
+  params = params.append('MessageContainer', messageContainer);
+  if (page != null && itemsPerPage != null) {
+    params = params.append('pageNumber', page);
+    params = params.append('pageSize', itemsPerPage);
+  }
+  return this.http.get<IMessage[]>(this.baseUrl + 'users/' + userId + '/messages' , {observe: 'response', params})
+  .pipe(
+    map(response => {
+      paginatedResult.result = response.body;
+      if ( response.headers.get('Pagination') !== null){
+        paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+      }
+      return paginatedResult;
+    })
+  );
+}
+getMessageThread(userId: string, recipientId: string){
+  return this.http.get<IMessage[]>(this.baseUrl + 'users/' + userId + '/messages/thread/' + recipientId);
+}
+sendMessage(userId: string, message: IMessage){
+  return this.http.post(this.baseUrl + 'users/' + userId + '/messages', message);
 }
 }

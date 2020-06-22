@@ -115,6 +115,8 @@ namespace DatingApp.API.Controllers
             if(!user.Photos.Any(x=>x.PhotoUniqueIdentifier==id)){
                 return Unauthorized(); 
             }
+
+            
             var photoFromRepository = await _repository.GetPhoto(id);
             if(photoFromRepository.IsMain)
             {
